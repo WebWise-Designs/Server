@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <!-- Add any CSS stylesheets or meta tags here -->
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Interface</h1>
+        <h2>Pending Jokes:</h2>
+        <ul id="jokes-list">
+            <!-- Jokes will be dynamically inserted here -->
+        </ul>
+    </div>
+    <!-- Add any JavaScript scripts here -->
+    <script>
+        // You can add JavaScript to fetch and display pending jokes here
+        // For example:
+        fetch('/admin/pending-jokes')
+            .then(response => response.json())
+            .then(data => {
+                const jokesList = document.getElementById('jokes-list');
+                data.forEach(joke => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = joke.text;
+                    jokesList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching pending jokes:', error));
+    </script>
+</body>
+</html>
