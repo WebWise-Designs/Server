@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <h2>Pending Jokes:</h2>
+  <ul>
+    <% jokes.forEach(joke => { %>
+      <li><%= joke.text %> 
+        <form action="/approve" method="POST" style="display: inline;">
+          <input type="hidden" name="id" value="<%= joke.id %>">
+          <button type="submit">Approve</button>
+        </form>
+        <form action="/deny" method="POST" style="display: inline;">
+          <input type="hidden" name="id" value="<%= joke.id %>">
+          <button type="submit">Deny</button>
+        </form>
+        <form action="/delete" method="POST" style="display: inline;">
+          <input type="hidden" name="id" value="<%= joke.id %>">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>
