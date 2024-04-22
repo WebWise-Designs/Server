@@ -1,11 +1,10 @@
-require('dotenv').config(); // Load environment variables from .env file
-
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 80; // Set the port to 80
 
 // MySQL Connection
 const db = mysql.createConnection({
@@ -38,10 +37,10 @@ db.connect((err) => {
 
 // Set up EJS
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, '')); // Set views directory to the root directory
 
 // Middleware
-app.use(express.static(__dirname)); // Serve static files from the root directory
+app.use(express.static(path.join(__dirname, ''))); // Serve static files from the root directory
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
