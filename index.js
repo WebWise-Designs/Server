@@ -1,12 +1,65 @@
-const http = require('http');
+require('dotenv').config(); // Load environment variables from .env file
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Up and Running\n');
+const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// MySQL Connection
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT
 });
 
-const PORT = 80;
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL database:', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+});
 
-server.listen(PORT, () => {
-  console.log(`Server running at port ${PORT}`);
+// Set up EJS
+app.set('view engine', 'ejs');
+
+// Middleware
+app.use(express.static(__dirname)); // Serve static files from the root directory
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Routes
+app.get('/', (req, res) => {
+  db.query('SELECT * FROM jokes', (err, results) => {
+    if (err) {
+      console.error('Error fetching jokes:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.render('index', { jokes: results });
+  });
+});
+
+app.post('/submit', (req, res) => {
+  const joke = req.body.joke;
+  if (!joke) {
+    res.redirect('/');
+    return;
+  }
+  db.query('INSERT INTO jokes (text) VALUES (?)', [joke], (err, result) => {
+    if (err) {
+      console.error('Error submitting joke:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.redirect('/');
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
