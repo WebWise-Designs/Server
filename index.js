@@ -121,6 +121,18 @@ app.post('/deny', authenticateAdmin, (req, res) => {
   });
 });
 
+app.post('/delete', authenticateAdmin, (req, res) => {
+  const jokeId = req.body.id;
+  db.query('DELETE FROM jokes WHERE id = ?', [jokeId], (err, result) => {
+    if (err) {
+      console.error('Error deleting joke:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.redirect('/admin');
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
