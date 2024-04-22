@@ -22,10 +22,23 @@ db.connect((err) => {
     return;
   }
   console.log('Connected to MySQL database');
+
+  // Create jokes table if it doesn't exist
+  db.query(`CREATE TABLE IF NOT EXISTS jokes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    text VARCHAR(255) NOT NULL
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating jokes table:', err);
+      return;
+    }
+    console.log('Jokes table created successfully');
+  });
 });
 
 // Set up EJS
 app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 // Middleware
 app.use(express.static(__dirname)); // Serve static files from the root directory
