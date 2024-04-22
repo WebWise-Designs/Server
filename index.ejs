@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JokeLabs</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>JokeLabs</h1>
+  <h2>Jokes:</h2>
+  <ul>
+    <% jokes.forEach(joke => { %>
+      <li><%= joke.text %></li>
+    <% }); %>
+  </ul>
+  
+  <h2>Submit a Joke:</h2>
+  <p>DO NOT SUBMIT ANY RACIST OR HOMOPHOBIC JOKE.</p>
+  <form action="/submit" method="POST">
+    <input type="text" name="joke" placeholder="Enter your joke">
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
